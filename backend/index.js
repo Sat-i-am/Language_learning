@@ -19,7 +19,7 @@ mongoose.connect(Mongo_url)
     const fetchEq = await db.collection("englishtohindi").find().toArray(); //this will get all the data inside easy_questions collections
     
 
-    global.English_questions = fetchEq; //now E_questions is a global variable
+    global.EngtoHinQuestions = fetchEq; //now E_questions is a global variable
     
 }).catch((err) => {
     console.log(err);

@@ -57,9 +57,22 @@ module.exports.chooseLang = async(req, res, next) => {
         return res.json({msg: "error choosing language"});
     } 
 }
-module.exports.displayEnglish_questions = async(req, res, next) => {
-    console.log("you chose easy in")
-    return res.json({English_questions});
+module.exports.showquestions = async(req, res, next) => {
+    const temp = req.body;
+    console.log(temp);
+    console.log(EngtoHinQuestions);
+    const difficulty = temp.difficulty;
+    const language = temp.language; 
+    let questions;
+    if( language === "englishtohindi" ){ //i.e. if user has chosen to learn hindi from english
+        // console.log(EngtoHinQuestions);
+
+        questions = EngtoHinQuestions[0].questions.filter((question) => question.difficulty === difficulty); //we are filtering questions from the required collection
+    }
+    else{ 
+        return res.json({ status: "false"})
+    }    
+    return res.json({questions});
 }
 module.exports.submitAnswer = async (req,res,next) => {
     const {language, questionid, userid, score} = req;
@@ -97,4 +110,5 @@ module.exports.setDifficulty = async(req, res, next)=> {
     } 
 
 }
+
 

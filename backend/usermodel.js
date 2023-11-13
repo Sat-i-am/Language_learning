@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: true,
     },
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     },
     language:{
         type: String,
-        required: true,
+        default: "",
     },
     correct_answers:[{
         type: String,
@@ -25,20 +25,26 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 0,
     }],
+    correct_count:{
+        type: String,
+        default: 0,
+    },
     proficiency:{
         type: String,
         default: 0,
-        required: true,
     },
     current_exercise:{
         type: String,
         default: 0,
-        required: true,
     },
     totalPoints: {
         type: Number,
         default: 0,
       },
+    difficulty:{
+        type: String,
+        default:"",
+    }
     
 })
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model("User", userSchema) 

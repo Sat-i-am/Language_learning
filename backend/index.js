@@ -7,7 +7,7 @@ const userRoutes = require("./userRoutes")
 const Port = 5000; //backend running on this port
 const Mongo_url = "mongodb://0.0.0.0:27017";
 const app = express();
-
+ 
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", userRoutes) //this means add this middleware with every request

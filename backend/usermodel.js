@@ -17,25 +17,25 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    correct_answers:[{
-        type: String,
+    // correct_answers:[{ not storing correct answers for now
+    //     type: String,
+    //     default: 0,
+    // }], 
+    wrong_count:{
+        type: Number,
         default: 0,
-    }], 
-    wrong_count:[{
-        type: String,
-        default: 0,
-    }],
+    },
     correct_count:{
-        type: String,
+        type: Number,
         default: 0,
     },
     proficiency:{
-        type: String,
+        type: Number,
         default: 0,
     },
     current_exercise:{
-        type: String,
-        default: 0,
+        type: Number,
+        default: 1,
     },
     totalPoints: {
         type: Number,

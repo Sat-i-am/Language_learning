@@ -4,20 +4,18 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const userRoutes = require("./userRoutes")
 
-const Port = 5000; //backend running on this port
-const Mongo_url = "mongodb://0.0.0.0:27017";
 const app = express();
  
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", userRoutes) //this means add this middleware with every request
 
-mongoose.connect(Mongo_url)
+mongoose.connect(process.env.MONGO_URL)
 .then( async ()=> {
     console.log("mongoose is connected");
     const db = await mongoose.connection.db;//this is to access the created database 
     const fetchEq = await db.collection("englishtohindi").find().toArray(); //this will get all the data inside easy_questions collections
-    const fetchHq = await db.collection("hinditoenglish").find().toArray();
+    const fetchHq = await db.collection("hinditoenglish").find().toArray(); 
 
     global.EngtoHinQuestions = fetchEq; //now E_questions is a global variable
     global.HintoEngQuestions = fetchHq; //now E_questions is a global variable
@@ -28,10 +26,8 @@ mongoose.connect(Mongo_url)
 });
 
 
- 
 
 
-
-app.listen(Port,()=>{
-    console.log(`server is listening on port ${Port}`);
-})
+app.listen(process.env.PORT,()=>{
+    console.log(`server is listening on port ${process.env.PORT}`);
+}) 

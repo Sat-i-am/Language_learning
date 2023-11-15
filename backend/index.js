@@ -17,9 +17,11 @@ mongoose.connect(Mongo_url)
     console.log("mongoose is connected");
     const db = await mongoose.connection.db;//this is to access the created database 
     const fetchEq = await db.collection("englishtohindi").find().toArray(); //this will get all the data inside easy_questions collections
-    
+    const fetchHq = await db.collection("hinditoenglish").find().toArray();
 
     global.EngtoHinQuestions = fetchEq; //now E_questions is a global variable
+    global.HintoEngQuestions = fetchHq; //now E_questions is a global variable
+
     
 }).catch((err) => {
     console.log(err);

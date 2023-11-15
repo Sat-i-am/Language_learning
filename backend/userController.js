@@ -1,16 +1,22 @@
 
 const User = require("./usermodel");
+const bcrypt = require("bcrypt")
+
+
 module.exports.register = async(req,res,next) =>{
+    
     try{
         console.log(req)
         const {username, mail, password} = req.body;
         const checkuser = await User.findOne({ username });//checking if there is a username that matches with this entered
         if(checkuser)
             return res.json({msg: "Username already exists", status: false });
+        const hashedPassword = await bcrypt.hash(password, 10); //password is encrypted now
+
         const user = await User.create({
             username,
             mail,
-            password,
+            password: hashedPassword,
         })
         console.log(user);
         
@@ -28,8 +34,8 @@ module.exports.login = async (req,res,next) => { //in this 'req' data is coming 
         if(!user)
             return res.json({msg: "Incorrect username or password", status: false });
 
-        
-        if( password != user.password ) //checking if entered password matches with the password already stored
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+        if( !isPasswordValid ) //checking if entered password matches with the password already stored
             return res.json({msg: "Incorrect username or password", status: false})
                 
         return res.json({status: true, user});
@@ -38,7 +44,6 @@ module.exports.login = async (req,res,next) => { //in this 'req' data is coming 
     }
 }; 
 module.exports.chooseLang = async(req, res, next) => {
-    console.log(req.body)
     const { username, currentLang, _id} = req.body;
     const language = currentLang;
     const userid = _id;
@@ -58,26 +63,27 @@ module.exports.chooseLang = async(req, res, next) => {
     } 
 }
 module.exports.showquestions = async(req, res, next) => {
-    const {language} = req.body;
-    console.log(req.body)
-    //console.log(temp);
-    //console.log(EngtoHinQuestions);
-    // const difficulty = temp.difficulty;
-    
-    let questions;
-    if( language === "englishtohindi" ){ //i.e. if user has chosen to learn hindi from english
-        // console.log(EngtoHinQuestions);
-        console.log(EngtoHinQuestions)
-        
-        questions = EngtoHinQuestions;
-        // questions = EngtoHinQuestions.filter((question) => question.difficulty === difficulty); //we are filtering questions from the required collection
-        //console.log(questions);
+    try{
+        const {language} = req.body;    
+        let questions;
+        if( language === "englishtohindi" ){ //i.e. if user has chosen to learn hindi from english
+            // console.log(EngtoHinQuestions);
+            //console.log(EngtoHinQuestions)
+            questions = EngtoHinQuestions;
+            // questions = EngtoHinQuestions.filter((question) => question.difficulty === difficulty); //we are filtering questions from the required collection
+            //console.log(questions);
+        }
+        else if ( language === "hinditoenglish"){ 
+            questions = HintoEngQuestions;
+        }     
+        return res.json({questions});
+    } catch(err){
+        console.log(err);
+        return res.json({msg:"internal server error"})
     }
-    else{ 
-        return res.json({ status: "false"})
-    }     
-    return res.json({questions});
 }
+
+
 module.exports.submitAnswer = async (req,res,next) => {
     console.log(req.body);
     const {questionid, userid, Points} = req.body;
@@ -102,10 +108,13 @@ module.exports.submitAnswer = async (req,res,next) => {
                 }, 
                 {new: true}
             )
-    
-        return res.json({status:"true"});
+        console.log("correct-",updatedUser.correct_count);
+        console.log("wrong-",updatedUser.wrong_count);
+
+
+        return res.json({status:"true", updatedUser});
     } catch (error){
-        console.log("error submiting answer", error)
+        console.log("internal server", error)
     }
 }
 module.exports.setDifficulty = async(req, res, next)=> {
@@ -118,7 +127,6 @@ module.exports.setDifficulty = async(req, res, next)=> {
         const user = await User.findOne({username});//after finding the user in database
         if( !user )
             return res.json({msg: "user not found"});
-    //console.log(user);
     try{
         const updatedUser = await User.findByIdAndUpdate( //updating using userid
             userid,
@@ -129,7 +137,7 @@ module.exports.setDifficulty = async(req, res, next)=> {
     } catch(err){
         return res.json({msg: "error choosing difficulty"});
     } 
-
 }
+
 
 

@@ -1,0 +1,21 @@
+
+.about-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-image: linear-gradient( to bottom,
+    #00478a 50%,
+    white 50% 100%);
+}
+.about-content{
+    border: 2px solid #eee;
+    padding: 2rem;
+    background: #F9FBE7;
+    color: #333;
+    border-radius: 10px;
+}
+.about-text{
+    margin-left: 8rem;
+}

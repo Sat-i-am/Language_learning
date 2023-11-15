@@ -1,0 +1,46 @@
+:root{
+    --color-pri:#00478a;
+}
+.navbar{
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    gap: 18rem;
+    background-color:var(--color-pri);
+    color: #F9FBE7;
+    position: fixed;
+    width: 100%;
+}
+.pagenav{
+    display: flex;
+    flex-direction: column;
+    background-color:#F9FBE7;
+    width: 100vw;
+    height: 100vh;
+    
+}
+
+.nav-link{
+    color: #F9FBE7;
+}
+.front-image{
+    background-image: url('../images/hello.jpg');
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 2px solid green;
+    object-fit: cover;
+}
+.hello{
+    width: 100%;
+    height: 100%;
+}
+
+.Navtext-links{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+.welcome{
+    font-size: 20px;
+}
